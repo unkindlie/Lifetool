@@ -4,21 +4,30 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.litekreu.lifetool.ui.theme.LifetoolTheme
 import com.litekreu.lifetool.ui.theme.googleSansFamily
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +47,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Box(modifier = modifier.background(MaterialTheme.colorScheme.inversePrimary)) {
+    var hi by rememberSaveable { mutableStateOf(false) }
+
+    val extraPadding by animateDpAsState(if (hi) 48.dp else 0.dp)
+
+    Row (modifier = modifier.background(MaterialTheme.colorScheme.inversePrimary).padding(start = extraPadding)) {
         Text(
             text = "Hello $name!",
             fontFamily = googleSansFamily,
@@ -46,6 +59,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             fontStyle = FontStyle.Italic,
             modifier = modifier
         )
+        ElevatedButton (onClick = { hi = !hi }) {
+            Text(hi.toString())
+        }
     }
 }
 
