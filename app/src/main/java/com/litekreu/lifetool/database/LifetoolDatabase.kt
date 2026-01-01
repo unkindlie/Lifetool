@@ -15,6 +15,6 @@ import com.litekreu.lifetool.features.note.classes.NoteEntity
     exportSchema = false
 )
 @TypeConverters(DateConverter::class)
-abstract class LifetoolDatabase: RoomDatabase() {
+abstract class LifetoolDatabase : RoomDatabase() {
     abstract val noteDao: NoteDao
 }
