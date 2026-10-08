@@ -10,9 +10,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.litekreu.lifetool.R
+import com.litekreu.lifetool.ui.theme.googleSansFamily
 
 @Composable
 fun DayItem(modifier: Modifier = Modifier, day: Int = 0) {
@@ -23,15 +26,16 @@ fun DayItem(modifier: Modifier = Modifier, day: Int = 0) {
         onClick = {  }
     ) {
         Column(
-            modifier = modifier.padding(12.dp),
+            modifier = modifier.padding(14.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = "Day $day",
+                text = "${stringResource(R.string.day)} $day",
                 fontWeight = FontWeight.Medium,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                fontFamily = googleSansFamily
             )
-            Text(text = "Something about the day")
+            Text(text = "Something about the day", fontFamily = googleSansFamily)
         }
     }
 }
