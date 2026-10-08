@@ -11,12 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.litekreu.lifetool.ui.components.DayItem
 import com.litekreu.lifetool.R
+import com.litekreu.lifetool.navigation.Routes
 import com.litekreu.lifetool.ui.theme.googleSansFamily
 
 @Composable
-fun DaysScreen(modifier: Modifier = Modifier) {
+fun DaysScreen(navController: NavController, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize().padding(horizontal = 18.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -28,9 +30,9 @@ fun DaysScreen(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Medium,
             fontFamily = googleSansFamily
         )
-        DayItem(day = 3)
-        DayItem(day = 2)
-        DayItem(day = 1)
-        DayItem()
+        DayItem(day = 3, onClick = { navController.navigate(Routes.DayDetailed(3)) })
+        DayItem(day = 2, onClick = { navController.navigate(Routes.DayDetailed(2)) })
+        DayItem(day = 1, onClick = { navController.navigate(Routes.DayDetailed(1)) })
+        DayItem(onClick = {})
     }
 }

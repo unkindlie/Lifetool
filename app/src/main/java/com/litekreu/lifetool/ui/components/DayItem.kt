@@ -18,12 +18,12 @@ import com.litekreu.lifetool.R
 import com.litekreu.lifetool.ui.theme.googleSansFamily
 
 @Composable
-fun DayItem(modifier: Modifier = Modifier, day: Int = 0) {
+fun DayItem(modifier: Modifier = Modifier, day: Int = 0, onClick: () -> Unit) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.secondaryContainer,
         shape = RoundedCornerShape(12.dp),
-        onClick = {  }
+        onClick = onClick
     ) {
         Column(
             modifier = modifier.padding(14.dp),
