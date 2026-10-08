@@ -4,17 +4,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHost
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.litekreu.lifetool.navigation.Routes
+import com.litekreu.lifetool.ui.screens.DayDetailedScreen
 import com.litekreu.lifetool.ui.theme.LifetoolTheme
+import com.litekreu.lifetool.ui.screens.DaysScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,11 +27,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LifetoolTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) { innerPadding ->
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.surfaceContainer
+                    ) {
+                        MainScreen(modifier = Modifier.padding(innerPadding))
+                    }
                 }
             }
         }
@@ -34,19 +44,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Box(modifier = modifier.background(MaterialTheme.colorScheme.onSurfaceVariant)) {
-        Text(
-            text = "Hello $name!",
-            modifier = modifier
-        )
-    }
-}
+fun MainScreen(modifier: Modifier = Modifier) {
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LifetoolTheme {
-        Greeting("Android")
+    NavHost(navController = navController, startDestination = Routes.Days) {
+        composable<Routes.Days> {
+            DaysScreen(navController = navController, modifier)
+        }
+        composable<Routes.DayDetailed> { entry ->
+            val route = entry.toRoute<Routes.DayDetailed>()
+            DayDetailedScreen(dayId = route.dayId, modifier)
+        }
     }
 }
