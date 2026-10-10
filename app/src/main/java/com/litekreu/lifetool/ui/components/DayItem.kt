@@ -15,7 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.litekreu.lifetool.R
-import com.litekreu.lifetool.ui.theme.googleSansFamily
 
 @Composable
 fun DayItem(modifier: Modifier = Modifier, day: Int = 0, onClick: () -> Unit) {
@@ -32,10 +31,9 @@ fun DayItem(modifier: Modifier = Modifier, day: Int = 0, onClick: () -> Unit) {
             Text(
                 text = "${stringResource(R.string.day)} $day",
                 fontWeight = FontWeight.Medium,
-                fontSize = 18.sp,
-                fontFamily = googleSansFamily
+                fontSize = 18.sp
             )
-            Text(text = "Something about the day", fontFamily = googleSansFamily)
+            Text(text = "Something about the day")
         }
     }
 }

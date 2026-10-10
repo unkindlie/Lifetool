@@ -15,7 +15,6 @@ import androidx.navigation.NavController
 import com.litekreu.lifetool.ui.components.DayItem
 import com.litekreu.lifetool.R
 import com.litekreu.lifetool.navigation.Routes
-import com.litekreu.lifetool.ui.theme.googleSansFamily
 
 @Composable
 fun DaysScreen(navController: NavController, modifier: Modifier = Modifier) {
@@ -28,7 +27,6 @@ fun DaysScreen(navController: NavController, modifier: Modifier = Modifier) {
             text = stringResource(R.string.days_title),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Medium,
-            fontFamily = googleSansFamily
         )
         DayItem(day = 3, onClick = { navController.navigate(Routes.DayDetailed(3)) })
         DayItem(day = 2, onClick = { navController.navigate(Routes.DayDetailed(2)) })
