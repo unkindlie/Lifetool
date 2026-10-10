@@ -17,15 +17,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.litekreu.lifetool.R
 
+enum class NavRoutes {
+    Days,
+    Saved
+}
+
 data class NavigationItem(
     val label: Int,
     val icon: ImageVector,
-    val route: Any
+    val route: NavRoutes
 )
 
 val NavigationItems = listOf(
-    NavigationItem( R.string.days_bottom_bar, Icons.Default.DateRange, Routes.Days),
-    NavigationItem(R.string.saved_bottom_bar, Icons.Default.Email, Routes.Saved)
+    NavigationItem( R.string.days_bottom_bar, Icons.Default.DateRange, NavRoutes.Days),
+    NavigationItem(R.string.saved_bottom_bar, Icons.Default.Email, NavRoutes.Saved)
 )
 
 @Composable
@@ -35,7 +40,12 @@ fun AppBottomNavBar(navController: NavHostController) {
         NavigationItems.forEachIndexed { i, it -> NavigationBarItem(
             selected = selectedIndex == i,
             onClick = {
-                navController.navigate(it.route)
+                navController.navigate(
+                    when(it.route) {
+                        NavRoutes.Days -> Routes.Days
+                        NavRoutes.Saved -> Routes.Saved
+                    }
+                )
                 selectedIndex = i
             },
             label = {
