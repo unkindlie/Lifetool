@@ -33,24 +33,29 @@ val NavigationItems = listOf(
     NavigationItem(R.string.saved_bottom_bar, Icons.Default.Email, NavRoutes.Saved)
 )
 
+
 @Composable
 fun AppBottomNavBar(navController: NavHostController) {
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
+
     NavigationBar {
         NavigationItems.forEachIndexed { i, it -> NavigationBarItem(
             selected = selectedIndex == i,
             onClick = {
-                navController.navigate(
-                    when(it.route) {
-                        NavRoutes.Days -> Routes.Days
-                        NavRoutes.Saved -> Routes.Saved
-                    }
-                )
+                val value = when(it.route) {
+                    NavRoutes.Days -> Routes.Days
+                    NavRoutes.Saved -> Routes.Saved
+                }
+
+                navController.navigate(value) {
+                    popUpTo(value)
+                    launchSingleTop = true
+                    restoreState = true
+                }
+
                 selectedIndex = i
             },
-            label = {
-                Text(stringResource(it.label))
-            },
+            label = { Text(stringResource(it.label)) },
             icon = {
                 Icon(
                     it.icon,
