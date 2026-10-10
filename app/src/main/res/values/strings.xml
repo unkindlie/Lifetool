@@ -2,4 +2,6 @@
     <string name="app_name">Lifetool</string>
     <string name="days_title">Days</string>
     <string name="day">Day</string>
+    <string name="days_bottom_bar">Days</string>
+    <string name="saved_bottom_bar">Saved</string>
 </resources>

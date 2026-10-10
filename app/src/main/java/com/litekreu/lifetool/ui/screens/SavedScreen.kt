@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun DayDetailedScreen(dayId: Int, modifier: Modifier = Modifier) {
+fun SavedScreen(modifier: Modifier) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Day $dayId", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Saved", style = MaterialTheme.typography.headlineMedium)
     }
 }

@@ -10,4 +10,6 @@ sealed interface Routes {
     data class DayDetailed(
         val dayId: Int
     ): Routes
+    @Serializable
+    data object Saved
 }

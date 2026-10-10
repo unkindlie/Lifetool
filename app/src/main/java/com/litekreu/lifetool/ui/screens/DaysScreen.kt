@@ -1,12 +1,18 @@
 package com.litekreu.lifetool.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -15,24 +21,34 @@ import androidx.navigation.NavController
 import com.litekreu.lifetool.ui.components.DayItem
 import com.litekreu.lifetool.R
 import com.litekreu.lifetool.navigation.Routes
-import com.litekreu.lifetool.ui.theme.googleSansFamily
 
 @Composable
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 fun DaysScreen(navController: NavController, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize().padding(horizontal = 18.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+    val list = remember { (13 downTo 1).toList() }
+
+    Scaffold(
+        topBar = {
+            Text(
+                text = stringResource(R.string.days_title),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Medium,
+            )
+        },
+        modifier = Modifier.padding(top = 48.dp, start = 18.dp, end = 18.dp)
     ) {
-        Text(
-            modifier = Modifier.padding(bottom = 10.dp),
-            text = stringResource(R.string.days_title),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Medium,
-            fontFamily = googleSansFamily
-        )
-        DayItem(day = 3, onClick = { navController.navigate(Routes.DayDetailed(3)) })
-        DayItem(day = 2, onClick = { navController.navigate(Routes.DayDetailed(2)) })
-        DayItem(day = 1, onClick = { navController.navigate(Routes.DayDetailed(1)) })
-        DayItem(onClick = {})
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.surfaceContainer
+        ) {
+            Column(
+                modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                list.forEach {
+                    DayItem(day = it, onClick = { navController.navigate(Routes.DayDetailed(it)) })
+                }
+            }
+        }
     }
 }
