@@ -67,7 +67,13 @@ dependencies {
     implementation(libs.hilt)
     implementation(libs.material.icons.core)
     implementation(libs.material.icons.extended)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel-compose:1.3.0")
 
+    annotationProcessor(libs.room.compiler)
+
+    ksp(libs.room.compiler)
     ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)

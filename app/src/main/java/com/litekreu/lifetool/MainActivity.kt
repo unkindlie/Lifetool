@@ -23,7 +23,9 @@ import com.litekreu.lifetool.ui.screens.DayDetailedScreen
 import com.litekreu.lifetool.ui.screens.DaysScreen
 import com.litekreu.lifetool.ui.screens.SavedScreen
 import com.litekreu.lifetool.ui.theme.LifetoolTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         lateinit var navController: NavController
