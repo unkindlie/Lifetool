@@ -2,7 +2,7 @@ package com.litekreu.lifetool.domain.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.litekreu.lifetool.data.LifetoolDatabase
+import com.litekreu.lifetool.data.repo.TaskRepository
 import com.litekreu.lifetool.domain.state.TaskState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,9 +13,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(
-    database: LifetoolDatabase
+    taskRepo: TaskRepository
 ): ViewModel() {
-    private val _tasks = database.taskDao.getAllTasks()
+    private val _tasks = taskRepo.getAllTasks()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
     private val _state = MutableStateFlow(TaskState())
 
