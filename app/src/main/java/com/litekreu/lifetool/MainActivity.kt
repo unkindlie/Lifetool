@@ -16,14 +16,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.litekreu.lifetool.navigation.AppBottomNavBar
 import com.litekreu.lifetool.navigation.Routes
 import com.litekreu.lifetool.ui.screens.DayDetailedScreen
 import com.litekreu.lifetool.ui.screens.DaysScreen
 import com.litekreu.lifetool.ui.screens.SavedScreen
 import com.litekreu.lifetool.ui.theme.LifetoolTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         lateinit var navController: NavController
@@ -57,9 +58,8 @@ fun MainScreen(navController: NavHostController, modifier: Modifier = Modifier) 
         composable<Routes.Days> {
             DaysScreen(navController = navController, modifier)
         }
-        composable<Routes.DayDetailed> { entry ->
-            val route = entry.toRoute<Routes.DayDetailed>()
-            DayDetailedScreen(dayId = route.dayId, modifier)
+        composable<Routes.DayDetailed> {
+            DayDetailedScreen(modifier = modifier)
         }
         composable<Routes.Saved> {
             SavedScreen(modifier)

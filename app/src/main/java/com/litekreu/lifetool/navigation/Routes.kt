@@ -8,7 +8,7 @@ sealed interface Routes {
     data object Days
     @Serializable
     data class DayDetailed(
-        val dayId: Int
+        val taskId: Int
     ): Routes
     @Serializable
     data object Saved

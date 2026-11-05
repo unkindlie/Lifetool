@@ -1,8 +1,8 @@
 package com.litekreu.lifetool.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -30,7 +30,7 @@ data class NavigationItem(
 
 val NavigationItems = listOf(
     NavigationItem( R.string.days_bottom_bar, Icons.Default.DateRange, NavRoutes.Days),
-    NavigationItem(R.string.saved_bottom_bar, Icons.Default.Email, NavRoutes.Saved)
+    NavigationItem(R.string.saved_bottom_bar, Icons.Default.Bookmark, NavRoutes.Saved)
 )
 
 
