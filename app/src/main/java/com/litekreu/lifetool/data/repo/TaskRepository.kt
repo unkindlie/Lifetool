@@ -7,4 +7,6 @@ interface TaskRepository {
     fun getAllTasks(): Flow<List<TaskEntity>>
 
     fun getTaskById(id: Int): Flow<TaskEntity?>
+
+    fun insertTask(title: String)
 }

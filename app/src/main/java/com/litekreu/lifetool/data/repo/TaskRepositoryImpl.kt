@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 class TaskRepositoryImpl(private val taskDao: TaskDao): TaskRepository {
     override fun getAllTasks(): Flow<List<TaskEntity>> = taskDao.getAllTasks()
     override fun getTaskById(id: Int): Flow<TaskEntity?> = taskDao.getTaskById(id)
+    override fun insertTask(title: String) = taskDao.insertTask(title)
 }

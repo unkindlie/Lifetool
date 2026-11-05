@@ -12,4 +12,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks WHERE id = :id")
     fun getTaskById(id: Int): Flow<TaskEntity?>
+
+    @Query("INSERT INTO tasks(title) VALUES (:title)")
+    fun insertTask(title: String)
 }
