@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.litekreu.lifetool.domain.viewmodel.SavedMessagesViewModel
+import com.litekreu.lifetool.ui.common.LoadingWrapper
 import com.litekreu.lifetool.ui.components.messages.MessageItem
 import com.litekreu.lifetool.ui.components.messages.MessageTextField
 
@@ -36,16 +37,18 @@ fun SavedScreen(
             Text(text = "Saved", style = MaterialTheme.typography.headlineMedium)
         },
         bottomBar = {
-            MessageTextField(
-                textState = textState,
-                onAdd = {
-                    messagesViewModel.addMessage(
-                        (textState.text.trim().replace("[ \t]+".toRegex(), " "))
-                    )
-                    textState.edit { replace(0, length, "") }
-                },
-                modifier = Modifier.padding(top = 8.dp)
-            )
+            if (state.messages.isNotEmpty()) {
+                MessageTextField(
+                    textState = textState,
+                    onAdd = {
+                        messagesViewModel.addMessage(
+                            (textState.text.trim().replace("[ \t]+".toRegex(), " "))
+                        )
+                        textState.edit { replace(0, length, "") }
+                    },
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
         },
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         modifier = modifier.padding(horizontal = 18.dp)
@@ -55,16 +58,21 @@ fun SavedScreen(
             modifier = Modifier.fillMaxSize()
                 .padding(innerPadding.plus(PaddingValues(bottom = 4.dp))),
         ) {
-            LazyColumn (
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth().padding(top = 52.dp),
-                reverseLayout = true
+            LoadingWrapper(
+                isLoading = state.isLoading,
+                error = state.error,
             ) {
-                items(state.messages) { message ->
-                    MessageItem(
-                        message = message.copy(),
-                        onRemove = { messagesViewModel.removeMessage(message.id) }
-                    )
+                LazyColumn (
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth().padding(top = 52.dp),
+                    reverseLayout = true
+                ) {
+                    items(state.messages) { message ->
+                        MessageItem(
+                            message = message,
+                            onRemove = { messagesViewModel.removeMessage(message.id) }
+                        )
+                    }
                 }
             }
         }
