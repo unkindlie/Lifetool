@@ -1,6 +1,7 @@
 package com.litekreu.lifetool.data.repo.impl
 
 import com.litekreu.lifetool.data.dao.SavedMessageDao
+import com.litekreu.lifetool.data.dto.messages.SavedMessageCreateDto
 import com.litekreu.lifetool.data.entities.SavedMessageEntity
 import com.litekreu.lifetool.data.repo.SavedMessageRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,8 +12,11 @@ class SavedMessageRepositoryImpl(
     override fun getMessagesBatch(batchNum: Int): Flow<List<SavedMessageEntity>> =
         savedMessageDao.getMessagesBatch(batchNum)
 
-    override fun createMessage(messageText: String) {
-        savedMessageDao.createdMessage(messageText)
+    override fun createMessage(input: SavedMessageCreateDto) {
+        savedMessageDao.createdMessage(
+            text = input.text,
+            createdAt = input.createdAt
+        )
     }
 
     override fun removeMessage(id: Int) {
