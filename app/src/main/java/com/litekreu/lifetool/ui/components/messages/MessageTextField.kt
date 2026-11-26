@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 fun MessageTextField(
     modifier: Modifier = Modifier,
     textState: TextFieldState = rememberTextFieldState(),
-    onAdd: () -> Unit
+    onSubmit: () -> Unit,
 ) {
     val interactionSource = remember {
         MutableInteractionSource()
@@ -80,7 +80,7 @@ fun MessageTextField(
                         inner()
                     }
                     FilledTonalIconButton(
-                        onClick = onAdd,
+                        onClick = onSubmit,
                         enabled = textState.text.isNotBlank()
                     ) {
                         Icon(

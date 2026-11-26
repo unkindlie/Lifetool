@@ -3,6 +3,7 @@ package com.litekreu.lifetool.domain.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.litekreu.lifetool.data.dto.messages.SavedMessageCreateDto
+import com.litekreu.lifetool.data.dto.messages.SavedMessageUpdateDto
 import com.litekreu.lifetool.data.repo.SavedMessageRepository
 import com.litekreu.lifetool.domain.state.SavedMessagesState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,6 +64,11 @@ class SavedMessagesViewModel @Inject constructor(
     fun addMessage(dto: SavedMessageCreateDto) {
         CoroutineScope(Dispatchers.IO).launch {
             savedMessagesRepo.createMessage(dto)
+        }
+    }
+    fun updateMessage(dto: SavedMessageUpdateDto) {
+        CoroutineScope(Dispatchers.IO).launch {
+            savedMessagesRepo.updateMessage(dto)
         }
     }
     fun removeMessage(id: Int) {

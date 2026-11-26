@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -70,18 +71,19 @@ fun RemovalWarning(
 @Composable
 fun MessageItem(
     message: SavedMessageEntity,
+    onEdit: () -> Unit,
     onRemove: () -> Unit
 ) {
-    var dialogRemovalValue: Int? by remember { mutableStateOf(null) }
+    var dialogRemovalId: Int? by remember { mutableStateOf(null) }
 
-    if (dialogRemovalValue !== null) {
+    if (dialogRemovalId !== null) {
         RemovalWarning(
             onDismissRequest = {
-                dialogRemovalValue = null
+                dialogRemovalId = null
             },
             onRemove = {
                 onRemove()
-                dialogRemovalValue = null
+                dialogRemovalId = null
             }
         )
     }
@@ -93,7 +95,7 @@ fun MessageItem(
         Surface(
             color = MaterialTheme.colorScheme.background,
             shape = RoundedCornerShape(6.dp),
-            modifier = Modifier.fillMaxWidth(0.85f)
+            modifier = Modifier.fillMaxWidth(0.75f)
                 .padding(vertical = 4.dp)
         ) {
             Column(modifier = Modifier.padding(
@@ -122,7 +124,13 @@ fun MessageItem(
                 )
             }
         }
-        IconButton(onClick = { dialogRemovalValue = message.id }) {
+        IconButton(onClick = onEdit) {
+            Icon(
+                imageVector = Icons.Default.Edit,
+                contentDescription = "Update the message"
+            )
+        }
+        IconButton(onClick = { dialogRemovalId = message.id }) {
             Icon(
                 imageVector = Icons.Default.Delete,
                 contentDescription = "Remove the message"

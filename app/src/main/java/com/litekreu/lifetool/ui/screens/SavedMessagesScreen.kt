@@ -14,12 +14,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.litekreu.lifetool.data.dto.messages.SavedMessageCreateDto
+import com.litekreu.lifetool.data.dto.messages.SavedMessageUpdateDto
 import com.litekreu.lifetool.domain.viewmodel.SavedMessagesViewModel
 import com.litekreu.lifetool.ui.common.LoadingWrapper
 import com.litekreu.lifetool.ui.components.messages.MessageItem
@@ -31,23 +35,39 @@ fun SavedScreen(
     messagesViewModel: SavedMessagesViewModel = hiltViewModel()
 ) {
     val textState = rememberTextFieldState()
+    val editTextState = rememberTextFieldState()
     val state by messagesViewModel.state.collectAsStateWithLifecycle()
+    var noteEditId: Int? by rememberSaveable { mutableStateOf(null) }
 
     Scaffold(
         topBar = {
-            Text(text = "Saved", style = MaterialTheme.typography.headlineMedium)
+            Text(text = "Saved notes", style = MaterialTheme.typography.headlineMedium)
         },
         bottomBar = {
             if (!state.isLoading) {
                 MessageTextField(
-                    textState = textState,
-                    onAdd = {
-                        messagesViewModel.addMessage(
-                            SavedMessageCreateDto(
-                                text = textState.text.trim().replace("[ \t]+".toRegex(), " ")
+                    textState = if (noteEditId !== null) editTextState else textState,
+                    onSubmit = {
+                        if (noteEditId != null) {
+                            messagesViewModel.updateMessage(
+                                SavedMessageUpdateDto(
+                                    id = noteEditId!!,
+                                    text = editTextState.text.trim()
+                                        .replace("[ \t]+".toRegex(), " ")
+                                )
                             )
-                        )
-                        textState.edit { replace(0, length, "") }
+                            editTextState.edit { replace(0, length, "") }
+                            noteEditId = null
+                        }
+                        else {
+                            messagesViewModel.addMessage(
+                                SavedMessageCreateDto(
+                                    text = textState.text.trim()
+                                        .replace("[ \t]+".toRegex(), " ")
+                                )
+                            )
+                            textState.edit { replace(0, length, "") }
+                        }
                     },
                     modifier = Modifier.padding(top = 8.dp)
                 )
@@ -73,6 +93,12 @@ fun SavedScreen(
                     items(state.messages) { message ->
                         MessageItem(
                             message = message,
+                            onEdit = {
+                                noteEditId = message.id
+                                editTextState.edit {
+                                    replace(0, length, message.text)
+                                }
+                            },
                             onRemove = { messagesViewModel.removeMessage(message.id) }
                         )
                     }
