@@ -1,7 +1,8 @@
-package com.litekreu.lifetool.data.repo
+package com.litekreu.lifetool.data.repo.impl
 
 import com.litekreu.lifetool.data.dao.TaskDao
 import com.litekreu.lifetool.data.entities.TaskEntity
+import com.litekreu.lifetool.data.repo.TaskRepository
 import kotlinx.coroutines.flow.Flow
 
 class TaskRepositoryImpl(private val taskDao: TaskDao): TaskRepository {

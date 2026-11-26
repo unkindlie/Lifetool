@@ -3,9 +3,12 @@ package com.litekreu.lifetool.di
 import android.app.Application
 import androidx.room.Room
 import com.litekreu.lifetool.data.LifetoolDatabase
+import com.litekreu.lifetool.data.dao.SavedMessageDao
 import com.litekreu.lifetool.data.dao.TaskDao
+import com.litekreu.lifetool.data.repo.SavedMessageRepository
 import com.litekreu.lifetool.data.repo.TaskRepository
-import com.litekreu.lifetool.data.repo.TaskRepositoryImpl
+import com.litekreu.lifetool.data.repo.impl.SavedMessageRepositoryImpl
+import com.litekreu.lifetool.data.repo.impl.TaskRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +26,7 @@ object AppModule {
             LifetoolDatabase::class.java,
             "lifetool_db"
         )
+            .fallbackToDestructiveMigration(false)
             .build()
     }
 
@@ -39,5 +43,21 @@ object AppModule {
         taskDao: TaskDao
     ): TaskRepository {
         return TaskRepositoryImpl(taskDao)
+    }
+
+    @Provides
+    @Singleton
+    fun providesSavedMessageDao(
+        database: LifetoolDatabase
+    ): SavedMessageDao {
+        return database.savedMessageDao
+    }
+
+    @Provides
+    @Singleton
+    fun providesSavedMessageRepo(
+        savedMessageDao: SavedMessageDao
+    ): SavedMessageRepository {
+        return SavedMessageRepositoryImpl(savedMessageDao)
     }
 }

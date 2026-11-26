@@ -9,12 +9,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.litekreu.lifetool.R
 
 enum class NavRoutes {
@@ -36,32 +34,40 @@ val NavigationItems = listOf(
 
 @Composable
 fun AppBottomNavBar(navController: NavHostController) {
-    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
+    val navStackBackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navStackBackEntry?.destination?.route
 
     NavigationBar {
-        NavigationItems.forEachIndexed { i, it -> NavigationBarItem(
-            selected = selectedIndex == i,
-            onClick = {
-                val value = when(it.route) {
-                    NavRoutes.Days -> Routes.Days
-                    NavRoutes.Saved -> Routes.Saved
-                }
-
-                navController.navigate(value) {
-                    popUpTo(value)
-                    launchSingleTop = true
-                    restoreState = true
-                }
-
-                selectedIndex = i
-            },
-            label = { Text(stringResource(it.label)) },
-            icon = {
-                Icon(
-                    it.icon,
-                    contentDescription = stringResource(it.label)
-                )
+        NavigationItems.forEach {
+            val route = when (it.route) {
+                NavRoutes.Days -> Routes.Days::class.qualifiedName
+                NavRoutes.Saved -> Routes.Saved::class.qualifiedName
             }
-        ) }
+
+            NavigationBarItem(
+                selected = currentRoute == route,
+                onClick = {
+                    val value = when(it.route) {
+                        NavRoutes.Days -> Routes.Days
+                        NavRoutes.Saved -> Routes.Saved
+                    }
+
+                    navController.navigate(value) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                label = { Text(stringResource(it.label)) },
+                icon = {
+                    Icon(
+                        it.icon,
+                        contentDescription = stringResource(it.label)
+                    )
+                }
+            )
+        }
     }
 }
